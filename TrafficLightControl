@@ -1,0 +1,88 @@
+// embedded C code
+//
+void setup()
+{
+  // 1 positive logic
+  pinMode(7, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(5, OUTPUT);
+  
+  //2 negative logic
+  pinMode(0, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(2, OUTPUT);
+  
+  //3 positive logic
+  pinMode(16, OUTPUT);
+  pinMode(15, OUTPUT);
+  pinMode(14, OUTPUT);
+  
+  //4 negative logic
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  
+  digitalWrite(7,LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(5, LOW);
+  
+  digitalWrite(0, HIGH);
+  digitalWrite(1, HIGH);
+  digitalWrite(2, HIGH);
+  
+  digitalWrite(16,LOW);
+  digitalWrite(15, LOW);
+  digitalWrite(14, LOW);
+  
+  digitalWrite(8, HIGH);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, HIGH);
+}
+  
+void loop()
+{
+   
+  digitalWrite(5, HIGH);//G1 ON
+  digitalWrite(0, LOW);//R2 ON
+  digitalWrite(16, HIGH);//R3 ON
+  digitalWrite(8, LOW);//R4 ON
+  delay(30000); 
+  
+  digitalWrite(5, LOW);//G1 off
+  digitalWrite(6, HIGH);//y1 ON
+  digitalWrite(0, HIGH);//R2 OFF
+  digitalWrite(2, LOW);//G2 ON
+  delay(25000);
+  
+  digitalWrite(6, LOW);//y1 OFF
+    digitalWrite(7, HIGH);//R1 ON
+    digitalWrite(2, HIGH);//G2 OFF
+    digitalWrite(1, LOW);//Y2 ON
+  digitalWrite(16, LOW);//R3 OFF
+  digitalWrite(14, HIGH);//G3 ON
+  delay(15000);
+  
+  digitalWrite(1, HIGH);//Y2 OFF
+  digitalWrite(0, LOW);//R2 ON
+    digitalWrite(14, LOW);//G3 OFF
+   digitalWrite(8, HIGH);//R4 OFF
+   digitalWrite(15, HIGH);//y3 ON
+  digitalWrite(10, LOW);//G4 ON
+  delay(20000);
+  
+  digitalWrite(15, LOW);//y3 Off
+   digitalWrite(10, HIGH);//G4 OFF
+  digitalWrite(16, HIGH);//R3 ON
+  digitalWrite(9, LOW);//Y4 ON
+  
+    digitalWrite(7, LOW);//R1 Off
+  digitalWrite(5, HIGH);//G1 ON
+    
+
+  delay(2000); 
+  
+  digitalWrite(9, HIGH);//Y4 OFF
+  digitalWrite(8, LOW);//R4 ON 
+  
+
+}
