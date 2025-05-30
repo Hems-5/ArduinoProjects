@@ -1,0 +1,81 @@
+// Temperature-Based Relay Control System
+// Originally created: April 2024 (one of my favorite months!)
+// Updated for documentation and GitHub upload
+
+#include <LiquidCrystal.h>
+
+// Initialize LCD: RS, EN, D4, D5, D6, D7
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
+
+#define r 2  // Relay connected to digital pin 2
+
+int temp; // Variable to store temperature value
+int set;  // Variable to store setpoint value
+
+void setup() 
+{
+  pinMode(r, OUTPUT);       // Set relay pin as output
+  pinMode(temp, INPUT);     // Set temp as input (note: not needed for analogRead)
+  pinMode(set, INPUT);      // Set set as input (note: not needed for analogRead)
+  
+  digitalWrite(r, LOW);     // Initially keep relay off
+
+  lcd.begin(16, 2);         // Initialize 16x2 LCD
+  Serial.begin(9600);       // Begin serial communication
+
+  // Display startup screen
+  lcd.setCursor(0, 0);
+  lcd.print("----------------");
+  lcd.setCursor(0, 1);
+  lcd.print("----------------");
+  delay(2000); 
+  lcd.clear();              // Clear screen after delay
+}
+
+void loop() 
+{
+  // Read temperature and scale from 0–1023 to 0–255
+  temp = analogRead(A0) >> 2;
+
+  // Display temperature on LCD
+  lcd.setCursor(0, 0);
+  lcd.print("Temp:");
+  Lcd_Decimal3(5, 0, temp);
+
+  // Read setpoint and scale similarly
+  set = analogRead(A1) >> 2;
+
+  // Display setpoint on LCD
+  lcd.setCursor(8, 0);
+  lcd.print("SET:");
+  Lcd_Decimal3(12, 0, set);
+
+  // Compare temp and setpoint to control relay
+  if (temp > set) {
+    digitalWrite(r, HIGH);  // Turn on relay
+    lcd.setCursor(0, 1);
+    lcd.print("HIGH TEMPERATURE");
+  } 
+  else if (temp < set) {
+    digitalWrite(r, LOW);   // Turn off relay
+    lcd.setCursor(0, 1);
+    lcd.print("     NORMAL     ");
+  }
+}
+
+// Custom function to print 3-digit decimal number at specific LCD position
+void Lcd_Decimal3(unsigned char com, unsigned char com1, unsigned int val)
+{
+  unsigned int Lcd_h, Lcd_hr, Lcd_t, Lcd_o;
+  lcd.setCursor(com, com1);
+  Lcd_h = val / 100;
+  Lcd_hr = val % 100;
+  Lcd_t = Lcd_hr / 10;
+  Lcd_o = Lcd_hr % 10;
+
+  lcd.write(Lcd_h + 0x30);
+  lcd.setCursor(com + 1, com1);
+  lcd.write(Lcd_t + 0x30);
+  lcd.setCursor(com + 2, com1);
+  lcd.write(Lcd_o + 0x30);
+}
