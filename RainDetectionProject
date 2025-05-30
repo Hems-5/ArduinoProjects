@@ -1,0 +1,49 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);  // Initialize LCD with digital pins
+
+int obj = A5;      // Object sensor pin
+int rain = A3;     // Rain sensor pin
+#define r A2       // Rain indicator (e.g., LED or relay)
+#define alm A4     // Alarm for object detection
+
+void setup() {
+  pinMode(obj, INPUT);
+  pinMode(rain, INPUT);
+  pinMode(r, OUTPUT);
+  pinMode(alm, OUTPUT);
+  
+  digitalWrite(r, LOW);
+  digitalWrite(alm, LOW);
+
+  lcd.begin(16, 2);        // Set up the LCD's columns and rows
+  lcd.setCursor(0, 0);
+  lcd.print("----------------");
+  lcd.setCursor(0, 1);
+  lcd.print("----------------");
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  // Object detection
+  if (digitalRead(obj) == HIGH) {
+    digitalWrite(alm, HIGH);     // Sound alarm
+    digitalWrite(r, LOW);
+    lcd.setCursor(0, 0);
+    lcd.print(" OBJECT DETECTED ");
+  } else {
+    digitalWrite(alm, LOW);
+    digitalWrite(r, LOW);
+  }
+
+  // Rain detection
+  if (digitalRead(rain) == HIGH) {
+    digitalWrite(alm, LOW);
+    digitalWrite(r, HIGH);       // Trigger rain indicator
+    lcd.setCursor(0, 1);
+    lcd.print("  RAIN DETECTED  ");
+  } else {
+    digitalWrite(alm, LOW);
+    digitalWrite(r, LOW);
+  }
+}
